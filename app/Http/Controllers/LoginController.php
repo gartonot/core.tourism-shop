@@ -14,7 +14,7 @@ class LoginController extends Controller
         ]);
 
         if(Auth::attempt($credentials)) {
-            return response()->json(['token' => config('apitokens')]);
+            return response()->json(['token' => config('apitoken')]);
         }
 
         return response()->json(['message' => 'Неверный логин или пароль']);
