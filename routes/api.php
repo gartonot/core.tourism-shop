@@ -20,10 +20,19 @@ Route::middleware('auth')->group(function() {
     Route::resource('/products', 'ProductController')->only([
         'store', 'update', 'destroy'
     ]);
+
+    // Category
+    Route::resource('/categories', 'CategoryController')->only([
+        'store', 'update', 'destroy'
+    ]);
 });
 
 // Products
 Route::resource('/products', 'ProductController')->only([
+    'index', 'show'
+]);
+
+Route::resource('/categories', 'CategoryController')->only([
     'index', 'show'
 ]);
 
