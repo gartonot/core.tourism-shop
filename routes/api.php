@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth')->group(function() {
+    // Products
+    Route::resource('/products', 'ProductController')->only([
+        'store', 'update', 'destroy'
+    ]);
+});
 
 Route::resource('/products', 'ProductController')->only([
-    'index', 'show', 'store', 'update', 'destroy'
+    'index', 'show'
 ]);
-
