@@ -17,7 +17,7 @@ class ProductRequest extends FormRequest
             'name' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|integer',
-            'image_url' => 'required|string',
+            'image' => 'required|image:png,jpg,webp',
         ];
 
         if($this->getMethod() === 'POST') {

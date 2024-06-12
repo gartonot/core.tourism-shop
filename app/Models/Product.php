@@ -13,7 +13,7 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'image_url'
+        'image'
     ];
 
     protected $hidden = [
