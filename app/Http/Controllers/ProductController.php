@@ -9,7 +9,15 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index() {
-        return Product::all();
+        $product = Product::get();
+
+        $response = $product;
+
+        foreach ($response as $productItem) {
+            $productItem->image_url = Storage::url($productItem->image_url);
+        }
+
+        return $response;
     }
 
     public function show($id)
