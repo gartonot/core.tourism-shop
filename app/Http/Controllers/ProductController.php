@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -18,7 +19,22 @@ class ProductController extends Controller
     }
 
     public function store(ProductRequest $request) {
-        return Product::create($request->validated());
+          $image = $request->file('image');
+          $path = $image->store('products');
+
+          $product = new Product();
+
+          $product->name = $request->name;
+          $product->description = $request->description;
+          $product->price = $request->price;
+          $product->image_url = $path;
+
+          $product->save();
+
+          $response = $product;
+          $response->image_url = Storage::url($response->image_url);
+
+          return response()->json($response, 201);
     }
 
     public function update(ProductRequest $request, $id) {
