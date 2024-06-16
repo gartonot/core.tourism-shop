@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index() {
-        $product = Product::get();
+    public function index(Request $request) {
+        $products = Product::get();
 
-        $response = $product;
+        if($request->input('category_id')) {
+            $categoryId = $request->input('category_id');
+            $products = Product::where('categories_id', $categoryId)->get();
+        }
+
+        $response = $products;
 
         foreach ($response as $productItem) {
             $productItem->image_url = Storage::url($productItem->image_url);
+            $categoryName = Category::where('id', $productItem->categories_id)->get('name');
+            $productItem->category_name = $categoryName[0]->name;
+            unset($productItem->categories_id);
         }
 
         return $response;
@@ -35,6 +45,7 @@ class ProductController extends Controller
           $product->name = $request->name;
           $product->description = $request->description;
           $product->price = $request->price;
+          $product->categories_id = $request->categories_id;
           $product->image_url = $path;
 
           $product->save();
