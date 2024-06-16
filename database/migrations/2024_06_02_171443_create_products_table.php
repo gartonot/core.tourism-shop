@@ -13,6 +13,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('price');
+            $table->unsignedBigInteger('categories_id');
             $table->string('image_url');
             $table->timestamps();
         });
