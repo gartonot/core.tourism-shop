@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\User\SessionKeyMail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -27,8 +28,22 @@ class LoginController extends Controller
             'email' => 'required',
         ]);
 
-        $email_code = '1234';
+        $email_code = random_int(1000, 9999);
 
+        // Отправляем код на почту
         Mail::to($request->email)->send(new SessionKeyMail($email_code));
+
+        // Сохраняем код в базу пользователя
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user) {
+            $user = new User();
+            $user->email = $request->email;
+            $user->email_code = $email_code;
+            $user->save();
+        }
+
+        $user->email_code = $email_code;
+        $user->save();
     }
 }
