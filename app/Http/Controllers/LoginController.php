@@ -45,5 +45,7 @@ class LoginController extends Controller
 
         $user->email_code = $email_code;
         $user->save();
+
+        return response()->json(null, 204);
     }
 }
