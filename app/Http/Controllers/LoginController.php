@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -47,5 +48,31 @@ class LoginController extends Controller
         $user->save();
 
         return response()->json(null, 204);
+    }
+
+    public function authUserByEmail(Request $request) {
+        $request->validate([
+            'email' => 'required',
+            'code' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user) {
+            return response()->json([], 404);
+        }
+
+        if($user->email_code !== $request->code) {
+            return response()->json([], 400);
+        }
+
+        $session_key = Str::random(64);
+
+        $user->session_key = $session_key;
+        $user->save();
+
+        return response()->json([
+            'session_key' => $session_key,
+        ]);
     }
 }

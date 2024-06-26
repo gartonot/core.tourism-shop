@@ -40,3 +40,4 @@ Route::resource('/categories', 'CategoryController')->only([
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/authSessionKey', [LoginController::class, 'authSessionKey']);
+Route::post('/authUserByEmail', [LoginController::class, 'authUserByEmail']);
