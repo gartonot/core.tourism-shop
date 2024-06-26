@@ -39,3 +39,4 @@ Route::resource('/categories', 'CategoryController')->only([
 // User
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
+Route::post('/authSessionKey', [LoginController::class, 'authSessionKey']);
