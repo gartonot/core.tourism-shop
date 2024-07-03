@@ -23,9 +23,11 @@ class OrderController extends Controller
             ], 400);
         }
 
+        $orderId = $user->id . random_int(10000, 99999);
 
         foreach ($request->products as $product) {
             $order = new Order();
+            $order->order_id = $orderId;
             $order->user_id = $user->id;
             $order->product_id = $product['id'];
             $order->count = $product['counter'];
