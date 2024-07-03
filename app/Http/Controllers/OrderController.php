@@ -18,7 +18,7 @@ class OrderController extends Controller
 
         if(!$user) {
             return response()->json([
-                'message' => 'Пользователь не авторизован',
+                'message' => 'Пользователь не найден',
                 'code' => 400,
             ], 400);
         }
@@ -33,5 +33,24 @@ class OrderController extends Controller
         }
 
         return response()->json('ok');
+    }
+
+    public function show(Request $request) {
+        $request->validate([
+            'sessionKey' => 'required|string',
+        ]);
+
+        $user = User::where('session_key', $request->sessionKey)->first();
+
+        if(!$user) {
+            return response()->json([
+                'message' => 'Пользователь не найден',
+                'code' => 400,
+            ], 400);
+        }
+
+        $orders = Order::where('user_id', $user->id)->get();
+
+        return response()->json($orders);
     }
 }

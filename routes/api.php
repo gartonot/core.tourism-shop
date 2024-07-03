@@ -45,3 +45,4 @@ Route::post('/authUserByEmail', [LoginController::class, 'authUserByEmail']);
 
 // Авторизация по sessionKey
 Route::post('/orderCreate', [OrderController::class, 'create']);
+Route::post('/orderShow', [OrderController::class, 'show']);
