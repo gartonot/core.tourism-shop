@@ -47,3 +47,4 @@ Route::post('/authUserByEmail', [LoginController::class, 'authUserByEmail']);
 Route::post('/orderCreate', [OrderController::class, 'create']);
 Route::post('/orderShow', [OrderController::class, 'show']);
 Route::post('/orderById/{id}', [OrderController::class, 'orderById']);
+Route::delete('/orderById/{id}', [OrderController::class, 'deleteOrderById']);

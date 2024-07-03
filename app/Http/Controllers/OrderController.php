@@ -74,4 +74,27 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
+
+    public function deleteOrderById(Request $request, $orderId) {
+        $request->validate([
+            'sessionKey' => 'required|string',
+        ]);
+
+        $user = User::where('session_key', $request->sessionKey)->first();
+
+        if(!$user) {
+            return response()->json([
+                'message' => 'Пользователь не найден',
+                'code' => 400,
+            ], 400);
+        }
+
+        $orders = Order::where('order_id', $orderId)->get();
+
+        foreach ($orders as $order) {
+            $order->delete();
+        }
+
+        return response()->json([], 204);
+    }
 }
