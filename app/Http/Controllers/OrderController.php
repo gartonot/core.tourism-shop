@@ -54,6 +54,7 @@ class OrderController extends Controller
 
         return [
             'id' => $order->id,
+            'order_id' => $order->order_id,
             'product' => $formattedProduct,
             'count' => $order->count,
             'created_at' => $order->created_at,
@@ -63,7 +64,7 @@ class OrderController extends Controller
     public function groupOrderById($orders) {
         $formattedOrder = array();
         foreach($orders as $order) {
-            $formattedOrder[$order['order_id']][] = $this->formattedOrder($order);
+            $formattedOrder[] = $this->formattedOrder($order);
         }
 
         return $formattedOrder;
