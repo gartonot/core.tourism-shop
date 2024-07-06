@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -37,6 +39,36 @@ class OrderController extends Controller
         return response()->json('ok');
     }
 
+    public function formattedOrder($order) {
+        $product = Product::findOrFail($order->product_id);
+        $category = Category::findOrFail($product->categories_id);
+
+        $formattedProduct = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => $product->description,
+            'price' => $product->price,
+            'category' => $category->name,
+            'image_url' => $product->image_url,
+        ];
+
+        return [
+            'id' => $order->id,
+            'product' => $formattedProduct,
+            'count' => $order->count,
+            'created_at' => $order->created_at,
+        ];
+    }
+
+    public function groupOrderById($orders) {
+        $formattedOrder = array();
+        foreach($orders as $order) {
+            $formattedOrder[$order['order_id']][] = $this->formattedOrder($order);
+        }
+
+        return $formattedOrder;
+    }
+
     public function show(Request $request) {
         $request->validate([
             'sessionKey' => 'required|string',
@@ -53,7 +85,7 @@ class OrderController extends Controller
 
         $orders = Order::where('user_id', $user->id)->get();
 
-        return response()->json($orders);
+        return response()->json($this->groupOrderById($orders));
     }
 
     public function orderById(Request $request, $orderId) {
@@ -72,7 +104,7 @@ class OrderController extends Controller
 
         $orders = Order::where('order_id', $orderId)->get();
 
-        return response()->json($orders);
+        return response()->json($this->groupOrderById($orders));
     }
 
     public function deleteOrderById(Request $request, $orderId) {
