@@ -129,4 +129,29 @@ class OrderController extends Controller
 
         return response()->json([], 204);
     }
+
+    public function updateOrder(Request $request, $id) {
+        $request->validate([
+            'sessionKey' => 'required|string',
+        ]);
+
+        $user = User::where('session_key', $request->sessionKey)->first();
+
+        if(!$user) {
+            return response()->json([
+                'message' => 'Пользователь не найден',
+                'code' => 400,
+            ], 400);
+        }
+
+        $orders = Order::where('order_id', $id)->get();
+
+
+        foreach ($orders as $order) {
+            $order->status = $request->status;
+            $order->save();
+        }
+
+        return response()->json($orders);
+    }
 }
