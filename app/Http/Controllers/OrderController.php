@@ -56,6 +56,7 @@ class OrderController extends Controller
             'id' => $order->id,
             'product' => $formattedProduct,
             'count' => $order->count,
+            'status' => $order->status,
             'created_at' => $order->created_at,
         ];
     }
