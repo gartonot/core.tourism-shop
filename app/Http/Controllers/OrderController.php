@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -49,7 +50,7 @@ class OrderController extends Controller
             'description' => $product->description,
             'price' => $product->price,
             'category' => $category->name,
-            'image_url' => $product->image_url,
+            'image_url' => Storage::url($product->image_url),
         ];
 
         return [
