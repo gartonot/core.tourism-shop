@@ -53,6 +53,12 @@ class OrderController extends Controller
             'image_url' => Storage::url($product->image_url),
         ];
 
+        // Названия статусов
+        // created
+        // inProgress
+        // waitPay
+        // done
+
         return [
             'id' => $order->id,
             'product' => $formattedProduct,
